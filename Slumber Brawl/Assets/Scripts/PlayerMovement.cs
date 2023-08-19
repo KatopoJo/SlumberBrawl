@@ -5,10 +5,13 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private LayerMask platformLayerMask;
-    public Rigidbody2D rb;
-    public BoxCollider2D bc;
-    public float moveSpeed = 10f;
-    public float jumpAmount = 15f;
+    public Rigidbody2D rigidbody2d;
+    public BoxCollider2D boxcollider2d;
+    public Animator animator;
+    public AudioSource[] speaker;
+    public SpriteRenderer sprite;
+    public float moveSpeed = 15f;
+    public float jumpAmount = 20f;
     public float buttonTime = 0.2f;
     float jumpTime = 0;
     bool isJumping = false;
@@ -21,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         // Freezes rotate so that the player always stays upright
-        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        rigidbody2d.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
     // Update is called once per frame
@@ -30,26 +33,29 @@ public class PlayerMovement : MonoBehaviour
         // Run (Holding the Shift key makes movement speed higher)
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            moveSpeed = 15f;
+            moveSpeed = 20f;
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            moveSpeed = 10f;
+            moveSpeed = 15f;
         }
 
         // Move left and right
         transform.Translate(Vector3.right * Time.deltaTime * Input.GetAxis("Horizontal") * moveSpeed);
+        animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
 
         // Jump (Pressing the Space or Z key adds force upwards)
+        animator.SetBool("Jumping", isJumping);
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Z)) && IsGrounded())
         {
-            rb.AddForce(Vector2.up * (jumpAmount * 0.8f), ForceMode2D.Impulse);
+            rigidbody2d.AddForce(Vector2.up * (jumpAmount * 0.8f), ForceMode2D.Impulse);
             isJumping = true;
             jumpTime = 0;
+            speaker[0].Play();
         }
         if (isJumping)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpAmount);
+            rigidbody2d.velocity = new Vector2(rigidbody2d.velocity.x, jumpAmount);
             jumpTime += Time.deltaTime;
         }
         if ((Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Z)) | jumpTime > buttonTime)
@@ -62,46 +68,55 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetAxis("Horizontal") > 0)
         {
             isFacingRight = true;
+            sprite.flipX = false;
+            
         }
         else if (Input.GetAxis("Horizontal") < 0)
         {
             isFacingRight = false;
+            sprite.flipX = true;
         }
 
         // Dash (Checks which direction the player is facing, then applies force)
         if (Input.GetKeyDown(KeyCode.X))
         {
+            speaker[1].Play();
             if (isFacingRight)
             {
-                rb.AddForce(Vector2.right * 10f, ForceMode2D.Impulse);
+                rigidbody2d.AddForce(Vector2.right * 15f, ForceMode2D.Impulse);
             }
             else
             {
-                rb.AddForce(Vector2.left * 10f, ForceMode2D.Impulse);
+                rigidbody2d.AddForce(Vector2.left * 15f, ForceMode2D.Impulse);
             }
+            animator.SetBool("Dash", true);
+        }
+        else
+        {
+            animator.SetBool("Dash", false);
         }
 
         // Changes gravity scale depending on where the player is in their jump
-        if (rb.velocity.y >= 1) // Normal gravity
+        if (rigidbody2d.velocity.y >= 1) // Normal gravity
         {
-            rb.gravityScale = gravityScale;
-            rb.drag = 2;
+            rigidbody2d.gravityScale = gravityScale;
+            rigidbody2d.drag = 2;
         }
-        else if (Mathf.Abs(rb.velocity.y) < 1) // Less gravity near apex of jump
+        else if (Mathf.Abs(rigidbody2d.velocity.y) < 1) // Less gravity near apex of jump
         {
-            rb.gravityScale = apexGravityScale;
-            rb.drag = 0;
+            rigidbody2d.gravityScale = apexGravityScale;
+            rigidbody2d.drag = 0;
         }
-        else if (rb.velocity.y < 0) { // More gravity when falling
-            rb.gravityScale = fallingGravityScale;
-            rb.drag = 2;
+        else if (rigidbody2d.velocity.y < 0) { // More gravity when falling
+            rigidbody2d.gravityScale = fallingGravityScale;
+            rigidbody2d.drag = 2;
         }
     }
     
     private bool IsGrounded()
     {
         float extraDistance = 1f;
-        RaycastHit2D raycastHit = Physics2D.BoxCast(bc.bounds.center, bc.bounds.size, 0f, Vector2.down, extraDistance, platformLayerMask);
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxcollider2d.bounds.center, boxcollider2d.bounds.size, 0f, Vector2.down, extraDistance, platformLayerMask);
         return raycastHit.collider != null;
     }
 }
@@ -121,4 +136,11 @@ public class PlayerMovement : MonoBehaviour
  * 
  * How to check if the player is touching the ground
  * https://www.youtube.com/watch?v=c3iEl5AwUF8
+ * 
+ * Parts of PlaySoundsOnKeyPress.cs from the CCT423 code library were used
+ * How to play multiple audio sources using button presses
+ * https://frederikmax.com/?p=912
+ * 
+ * How to flip a sprite based on direction
+ * https://vionixstudio.com/2022/03/30/how-to-flip-a-sprite-in-unity/#:~:text=FlipX%20flips%20the%20sprite%20along,FlipY%20checkbox%20on%20the%20SpriteRenderer.
  */
