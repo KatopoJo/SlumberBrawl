@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,3 +19,6 @@ public class MainMenuControl : MonoBehaviour
         Debug.Log("You would quit here.");
     }
 }
+/*
+ * This code uses parts from the CCT285 code library.
+ */

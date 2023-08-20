@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -44,6 +42,6 @@ public class Timer : MonoBehaviour
     }
 }
 /*
- * Countdown timer displaying minutes and seconds
+ * Countdown timer displaying minutes and seconds:
  * https://gamedevbeginner.com/how-to-make-countdown-timer-in-unity-minutes-seconds/
  */

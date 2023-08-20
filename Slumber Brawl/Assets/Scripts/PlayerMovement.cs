@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -69,7 +67,6 @@ public class PlayerMovement : MonoBehaviour
         {
             isFacingRight = true;
             sprite.flipX = false;
-            
         }
         else if (Input.GetAxis("Horizontal") < 0)
         {
@@ -121,26 +118,34 @@ public class PlayerMovement : MonoBehaviour
     }
 }
 /*
- * Shows several ways to implement different types of jumps
- * Also shows how to implement variable jump height
+ * Line 44 of this program was taken from the SmoothCompassMovement2D script
+ * in the CCT423 code library.
+ * How to add movement in a 2D game:
+ * https://forum.unity.com/threads/move-left-right-up-down-script-for-noobs-c.168848/
+ * 
+ * Shows several ways to implement different types of jumps.
+ * Also shows how to implement variable jump height:
  * https://gamedevbeginner.com/how-to-jump-in-unity-with-or-without-physics/
  * 
- * Showcases common mechanics for player movement in good 2D platformers
+ * Common mechanics for player movement in good 2D platformers:
  * http://www.davetech.co.uk/gamedevplatformer
  * 
- * Documentation for the drag property in Rigidbody2D components
+ * Documentation for the drag property in Rigidbody2D components:
  * https://docs.unity3d.com/ScriptReference/Rigidbody2D-drag.html
  * 
- * Documentation for the GetAxis method under the Input class
+ * Documentation for the GetAxis method under the Input class:
  * https://docs.unity3d.com/ScriptReference/Input.GetAxis.html
  * 
- * How to check if the player is touching the ground
+ * How to check if the player is touching the ground:
  * https://www.youtube.com/watch?v=c3iEl5AwUF8
  * 
- * Parts of PlaySoundsOnKeyPress.cs from the CCT423 code library were used
- * How to play multiple audio sources using button presses
+ * Parts of PlaySoundsOnKeyPress.cs from the CCT423 code library were used.
+ * How to play multiple audio sources using button presses:
  * https://frederikmax.com/?p=912
  * 
- * How to flip a sprite based on direction
+ * How to add player animations:
+ * https://youtu.be/hkaysu1Z-N8
+ * 
+ * How to flip a sprite based on direction:
  * https://vionixstudio.com/2022/03/30/how-to-flip-a-sprite-in-unity/#:~:text=FlipX%20flips%20the%20sprite%20along,FlipY%20checkbox%20on%20the%20SpriteRenderer.
  */

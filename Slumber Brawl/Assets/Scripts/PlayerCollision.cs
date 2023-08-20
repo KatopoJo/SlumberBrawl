@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,3 +17,7 @@ public class PlayerCollision : MonoBehaviour
         }
     }
 }
+/*
+ * How to add player collision detection:
+ * https://youtu.be/0ZJPmjA5Hv0
+ */

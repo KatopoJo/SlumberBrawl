@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BasicChase2D : MonoBehaviour
@@ -8,7 +6,6 @@ public class BasicChase2D : MonoBehaviour
     public Rigidbody2D rigidbody2d;
     public SpriteRenderer sprite;
     public float speed;
-    private float distance;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +16,6 @@ public class BasicChase2D : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        distance = Vector2.Distance(transform.position, destination.transform.position);
         Vector2 direction = destination.transform.position - transform.position;
         transform.position = Vector2.MoveTowards(this.transform.position, destination.transform.position, speed * Time.deltaTime);
 
@@ -35,8 +31,10 @@ public class BasicChase2D : MonoBehaviour
     }
 }
 /*
- * This code was taken from the CCT423 code library and modified a little.
- * 
+ * This code was taken from the CCT423 code library and modified.
  * How to chase a game object in 2D:
  * https://www.youtube.com/watch?v=2SXa10ILJms
+ * 
+ * How to flip a sprite based on direction:
+ * https://vionixstudio.com/2022/03/30/how-to-flip-a-sprite-in-unity/#:~:text=FlipX%20flips%20the%20sprite%20along,FlipY%20checkbox%20on%20the%20SpriteRenderer.
  */
